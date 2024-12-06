@@ -24,10 +24,11 @@
 const chalk=require('chalk');
 const { program } = require('commander')
 const RomPatcher = require('./rom-patcher-js/RomPatcher');
+const fs = require('node:fs');
 
 
 program
-    .command('patch')
+    .command('localPatch')
     .description('patches a ROM')
     .argument('<rom_file>','the ROM file that will be patched')
     .argument('<patch_file>', 'the patch to apply')
@@ -48,6 +49,16 @@ program
 			const patchedRom=RomPatcher.applyPatch(romFile, patch, options);
 			patchedRom.save();
 			console.log(chalk.green('successfully saved to ' + patchedRom.fileName));
+
+			/* fs.rename(romPath, romPath + ".bak", (err) => {
+				if (err) throw err;
+				console.log('Rename complete!');
+			 });
+			 */
+			fs.rename(patchedRom.fileName, romPath +".patch." + patchedRom.getExtension(), (err) => {
+				if (err) throw err;
+				console.log('Rename complete!');
+			 });
 		}catch(err){
 			console.log(chalk.bgRed('error: ' + err.message));
 		}

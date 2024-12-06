@@ -90,6 +90,9 @@ const RomPatcher = (function () {
 	}
 
 	return {
+		getExtension: function(BinFile){
+			return _getRomSystem;
+		},
 		parsePatchFile: function (patchFile) {
 			if (!(patchFile instanceof BinFile))
 				throw new Error('Patch file is not an instance of BinFile');
